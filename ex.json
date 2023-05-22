@@ -1,0 +1,14 @@
+{
+    "latitude": 22.25,
+    "longitude": 70.75,
+    "generationtime_ms": 0.6400346755981445,
+    "utc_offset_seconds": 19800,
+    "timezone": "Asia/Kolkata",
+    "timezone_abbreviation": "IST",
+    "elevation": 139.0,
+    "hourly_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C"
+    }
+    
+}
