@@ -17,25 +17,29 @@ const weather = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [lat, setlat] = useState(null);
   const [lon, setlon] = useState(null);
-  const [weatherCode, setweatherCode] = useState(null)
+  const [weatherCode, setweatherCode] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_KEY =  process.env.NEXT_PUBLIC_api_key;
+        const API_KEY = process.env.NEXT_PUBLIC_api_key;
         let url = '';
         if (query.lat && query.lon) {
           url = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&appid=${API_KEY}`;
         } else if (query.city) {
           url = `https://api.openweathermap.org/data/2.5/weather?q=${query.city}&appid=${API_KEY}`;
-        } else {
+        } else if (query.city && query.country) {
+          url = `https://api.openweathermap.org/data/2.5/weather?q=${query.city},${query.country}&appid=${API_KEY}`;
+        }
+
+        else {
           setError('Invalid query parameters');
           setLoading(false);
           return;
         }
+
 
         const response = await fetch(url);
         const data = await response.json();
@@ -61,6 +65,8 @@ const weather = () => {
         );
         setWeatherData(response.data);
         setweatherCode(response.data.current_weather.weathercode)
+
+       
       } catch (error) {
         console.error('Error fetching weather data:', error);
       }
@@ -72,15 +78,17 @@ const weather = () => {
   }, [query, lat, lon]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div className=" flex justify-center text-center">
+      <p className="my-3 font-bold text-4xl"  />.................
+    </div>;
   }
 
   if (error) {
-    return <p>An error occurred: {error}</p>;
+    return <p className='flex items-center justify-center min-h-screen font-bold text-3xl text-red-600 mx-auto'>An error occurred: {error}</p>;
   }
 
-  
-  
+
+
   const getWeatherDescription = (code) => {
     switch (code) {
       case 0:
@@ -149,13 +157,13 @@ const weather = () => {
     }
   };
 
-  
-  
+
+
   // const weatherDescription = getWeatherDescription(weatherCode);
 
   return (
     <>
-     <Head>
+      <Head>
         <title> {weather.name},{weather.sys.country} Weather Forecast | SkyScanner</title>
       </Head>
 
@@ -168,18 +176,18 @@ const weather = () => {
         </div> */}
 
           <div>
-            <div className='p-5'>
+            <div className='p-5 '>
 
 
               <div className='grid grid-cols-1 xl:grid-cols-2 gap-6 m-2'>
                 {/* StatsCard */}
 
-                <StatsCard 
-                title='City'
+                <StatsCard
+                  title='City'
                   mertic={`${weather.name}, ${weather.sys.country}`}
                   color="red" />
 
-<StatsCard title="Latitude Longitude"
+                <StatsCard title="Latitude Longitude"
                   mertic={`${lat}, ${lon}`}
                   color="red" />
 
@@ -240,9 +248,13 @@ const weather = () => {
 
                 {/* UV index */}
                 <UVIndexChart results={weatherData} />
+
+                {/* Aqi Chart */}
+
+                
               </div>
 
-              <div className='pb-5'>
+              <div className='pb-5 m-5 '>
                 <p className='text-sm text-gray-400'>Last Updated at: {" "} {new Date(weatherData.current_weather.time).toLocaleString()}  ({weatherData.timezone})</p>
               </div>
             </div>
