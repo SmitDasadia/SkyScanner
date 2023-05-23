@@ -32,56 +32,55 @@ const WeatherApp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen ">
-      <div className="px-8 py-6 sm:p-10 sm:max-w-max max-w-4xl w-full">
-        <form onSubmit={handleFormSubmit} className="flex flex-col space-y-4">
-          <div className="flex space-x-4 items-center">
-            <div className="flex-1">
-             
-              <input
-                type="text"
-                id="latitude"
-                name="latitude"
-                placeholder='latitude'
-                value={latitude}
-                onChange={handleInputChange}
-                className="p-2 border border-gray-300 rounded w-full"
-              />
-            </div>
-
-
-            <div className="flex-1">
-              
-              <input
-                type="text"
-                id="longitude"
-                name="longitude"
-                placeholder='longitude'
-                value={longitude}
-                onChange={handleInputChange}
-                className="p-2 border border-gray-300 rounded w-full"
-              />
-            </div>
-
-            <div className="flex-1">
-              
-              <input
-                type="text"
-                id="city"
-                name="city"
-                placeholder='Search City'
-                value={city}
-                onChange={handleInputChange}
-                className="p-2 border border-gray-300 rounded w-full"
-              />
-            </div>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className=" px-8 py-6 sm:p-10 max-w-md w-full">
+        <h1 className="text-2xl font-bold mb-6 text-center">SkyScaaner</h1>
+        <form onSubmit={handleFormSubmit} className="space-y-6">
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 text-sm font-bold" htmlFor="latitude">
+              Latitude:
+            </label>
+            <input
+              type="text"
+              id="latitude"
+              name="latitude"
+              value={latitude}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            />
           </div>
 
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 text-sm font-bold" htmlFor="longitude">
+              Longitude:
+            </label>
+            <input
+              type="text"
+              id="longitude"
+              name="longitude"
+              value={longitude}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
 
+          <div className="flex flex-col space-y-2">
+            <label className="text-gray-700 text-sm font-bold" htmlFor="city">
+              City:
+            </label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={city}
+              onChange={handleInputChange}
+              className="p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            />
+          </div>
 
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none w-full"
           >
             Get Weather
           </button>
