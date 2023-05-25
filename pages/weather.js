@@ -28,11 +28,7 @@ const weather = () => {
         let url = '';
         if (query.lat && query.lon) {
           url = `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lon}&appid=${API_KEY}`;
-        } else if (query.city) {
-          url = `https://api.openweathermap.org/data/2.5/weather?q=${query.city}&appid=${API_KEY}`;
-        } else if (query.city && query.country) {
-          url = `https://api.openweathermap.org/data/2.5/weather?q=${query.city},${query.country}&appid=${API_KEY}`;
-        }
+        }  
 
         else {
           setError('Invalid query parameters');
@@ -76,15 +72,16 @@ const weather = () => {
 
     fetchData();
   }, [query, lat, lon]);
-
   if (loading) {
-    return <div className=" flex justify-center text-center">
-      <p className="my-3 font-bold text-4xl"  />.................
+    return <div className=" flex items-center justify-center min-h-screen font-bold text-3xl text-slate-950 mx-auto">
+      <p className="my-3 font-bold text-4xl"  />Fetching Weather Details
     </div>;
   }
 
+  
+
   if (error) {
-    return <p className='flex items-center justify-center min-h-screen font-bold text-3xl text-red-600 mx-auto'>An error occurred: {error}</p>;
+    return <p className='flex items-center justify-center min-h-screen font-bold text-3xl text-slate-950 mx-auto'>An error occurred: {error}</p>;
   }
 
 
@@ -166,105 +163,103 @@ const weather = () => {
       <Head>
         <title> {weather.name},{weather.sys.country} Weather Forecast | SkyScanner</title>
       </Head>
-
-      {weatherData ? (
+     
+      {weatherData && (
         <>
 
-          {/* <div>
-          <SidePannel city={weather.name} lat={lat} lon={lon} results={weatherData} />
+        {/* <div>
+        <SidePannel city={weather.name} lat={lat} lon={lon} results={weatherData} />
 
-        </div> */}
+      </div> */}
 
-          <div>
-            <div className='p-5 '>
-
-
-              <div className='grid grid-cols-1 xl:grid-cols-2 gap-6 m-2'>
-                {/* StatsCard */}
-
-                <StatsCard
-                  title='City'
-                  mertic={`${weather.name}, ${weather.sys.country}`}
-                  color="red" />
-
-                <StatsCard title="Latitude Longitude"
-                  mertic={`${lat}, ${lon}`}
-                  color="red" />
-
-                <StatsCard title="Cuurent Temperature"
-                  mertic={`${weatherData.current_weather.temperature.toFixed(1)}°C`}
-                  color="blue" />
-
-                <StatsCard title="Weather"
-                  mertic={getWeatherDescription(weatherCode)}
-                  color="blue" />
+        <div>
+          <div className='p-5 '>
 
 
-                <StatsCard title="Maximum Temperature"
-                  mertic={`${weatherData.daily.temperature_2m_max[0].toFixed(1)}°C`}
-                  color="yellow" />
+            <div className='grid grid-cols-1 xl:grid-cols-2 gap-6 m-2'>
+              {/* StatsCard */}
 
-                <StatsCard title="Minimum Temperature"
-                  mertic={`${weatherData.daily.temperature_2m_min[0].toFixed(1)}°C`}
-                  color="blue" />
+              <StatsCard
+                title='City'
+                mertic={`${weather.name}, ${weather.sys.country}`}
+                color="red" />
 
-                <div>
-                  <StatsCard title="UV Index"
-                    mertic={`${weatherData.daily.uv_index_max[0].toFixed(1)}`}
-                    color="orange" />
+              <StatsCard title="Latitude Longitude"
+                mertic={`${lat}, ${lon}`}
+                color="red" />
 
-                  {Number(weatherData.daily.uv_index_max[0].toFixed(1)) > 5 && (
+              <StatsCard title="Cuurent Temperature"
+                mertic={`${weatherData.current_weather.temperature.toFixed(1)}°C`}
+                color="blue" />
+
+              <StatsCard title="Weather"
+                mertic={getWeatherDescription(weatherCode)}
+                color="blue" />
 
 
-                    <Callout
-                      className='mt-5'
-                      title=" High UV Index! Protect yourself now. Seek shade, wear sunscreen, and cover up. Stay safe"
-                      icon={ExclamationIcon}
-                      color="rose"
-                    />
+              <StatsCard title="Maximum Temperature"
+                mertic={`${weatherData.daily.temperature_2m_max[0].toFixed(1)}°C`}
+                color="yellow" />
 
-                  )}
-                </div>
+              <StatsCard title="Minimum Temperature"
+                mertic={`${weatherData.daily.temperature_2m_min[0].toFixed(1)}°C`}
+                color="blue" />
 
-                <div className='flex space-x-5'>
-                  <StatsCard title="Wind Speed"
-                    mertic={`${weatherData.current_weather.windspeed.toFixed(1)} KM/H`}
-                    color="cyan" />
+              <div>
+                <StatsCard title="UV Index"
+                  mertic={`${weatherData.daily.uv_index_max[0].toFixed(1)}`}
+                  color="orange" />
 
-                  <StatsCard title="Wind Direction"
-                    mertic={`${weatherData.current_weather.winddirection.toFixed(1)}°`}
-                    color="violet" />
+                {Number(weatherData.daily.uv_index_max[0].toFixed(1)) > 5 && (
 
-                </div>
 
+                  <Callout
+                    className='mt-5'
+                    title=" High UV Index! Protect yourself now. Seek shade, wear sunscreen, and cover up. Stay safe"
+                    icon={ExclamationIcon}
+                    color="rose"
+                  />
+
+                )}
+              </div>
+
+              <div className='flex space-x-5'>
+                <StatsCard title="Wind Speed"
+                  mertic={`${weatherData.current_weather.windspeed.toFixed(1)} KM/H`}
+                  color="cyan" />
+
+                <StatsCard title="Wind Direction"
+                  mertic={`${weatherData.current_weather.winddirection.toFixed(1)}°`}
+                  color="violet" />
 
               </div>
 
-              <hr className='border-t border-gray-300 my-4' />
 
-              <div className='space-y-3'>
-                {/* Temp Charts */}
-                <TempChart results={weatherData} />
+            </div>
 
-                {/* UV index */}
-                <UVIndexChart results={weatherData} />
+            <hr className='border-t border-gray-300 my-4' />
 
-                {/* Aqi Chart */}
+            <div className='space-y-3'>
+              {/* Temp Charts */}
+              <TempChart results={weatherData} />
 
-                
-              </div>
+              {/* UV index */}
+              <UVIndexChart results={weatherData} />
 
-              <div className='pb-5 m-5 '>
-                <p className='text-sm text-gray-400'>Last Updated at: {" "} {new Date(weatherData.current_weather.time).toLocaleString()}  ({weatherData.timezone})</p>
-              </div>
+              {/* Aqi Chart */}
+
+              
+            </div>
+
+            <div className='pb-5 m-5 '>
+              <p className='text-sm text-gray-400'>Last Updated at: {" "} {new Date(weatherData.current_weather.time).toLocaleString()}  ({weatherData.timezone})</p>
             </div>
           </div>
-        </>
-
-      ) : (
-        <p>Loading weather data...</p>
+        </div>
+      </>
       )}
 
+      
     </>
   );
 };
